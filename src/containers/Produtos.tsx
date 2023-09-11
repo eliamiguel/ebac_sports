@@ -1,43 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Produto as ProdutoType } from '../App'
 import Produto from '../components/Produto'
 
+import { useGetProdutosQuery } from '../services/api'
+
 import * as S from './styles'
 
-type Props = {
-  produtos: ProdutoType[]
-  favoritos: ProdutoType[]
-  adicionarAoCarrinho: (produto: ProdutoType) => void
-  favoritar: (produto: ProdutoType) => void
-}
+const Produtos = () => {
+  const { data: roupas, isLoading } = useGetProdutosQuery()
 
-const ProdutosComponent = ({
-  produtos,
-  favoritos,
-  adicionarAoCarrinho,
-  favoritar
-}: Props) => {
-  const produtoEstaNosFavoritos = (produto: ProdutoType) => {
-    const produtoId = produto.id
-    const IdsDosFavoritos = favoritos.map((f) => f.id)
-
-    return IdsDosFavoritos.includes(produtoId)
-  }
+  if (isLoading) return <h2>Carregando...</h2>
 
   return (
     <>
       <S.Produtos>
-        {produtos.map((produto) => (
-          <Produto
-            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
-            key={produto.id}
-            produto={produto}
-            favoritar={favoritar}
-            aoComprar={adicionarAoCarrinho}
+        {roupas?.map((produto) => (
+          // eslint-disable-next-line prettier/prettier
+        <Produto key={produto.id} produto={produto} aoComprar={function (_produto: ProdutoType): void {
+              throw new Error('Function not implemented.')
+              // eslint-disable-next-line prettier/prettier, @typescript-eslint/no-unused-vars
+          } } favoritar={function (_produto: ProdutoType): void {
+              throw new Error('Function not implemented.')
+            }}
+            estaNosFavoritos={false}
           />
         ))}
       </S.Produtos>
     </>
   )
 }
-
-export default ProdutosComponent
+export default Produtos
